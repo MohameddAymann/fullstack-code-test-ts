@@ -10,11 +10,13 @@ const UserList: React.FC = () => {
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
   const isLoadingRef = useRef(false);
 
   const { ref, inView } = useInView({
     threshold: 0.1,
-    rootMargin: '100px',
+    rootMargin: '200px',
+    skip: !initialLoadComplete, // Don't observe until initial load is complete
   });
 
   // Load initial users on component mount
@@ -32,6 +34,10 @@ const UserList: React.FC = () => {
         console.log('Initial users loaded:', response);
         setUsers(response.data);
         setHasMore(response.page < response.total_pages);
+        // Enable infinite scroll after initial load is complete
+        setTimeout(() => {
+          setInitialLoadComplete(true);
+        }, 1000); // 1 second delay to ensure smooth UX
       } catch (err) {
         console.error('Error loading initial users:', err);
         setError(err instanceof Error ? err.message : 'Failed to load users');
@@ -46,10 +52,17 @@ const UserList: React.FC = () => {
 
   // Handle infinite scroll
   useEffect(() => {
-    if (inView && hasMore && !loading && !isLoadingRef.current) {
+    if (
+      inView &&
+      hasMore &&
+      !loading &&
+      !isLoadingRef.current &&
+      initialLoadComplete
+    ) {
+      console.log('Triggering infinite scroll - loading page:', page + 1);
       setPage(prevPage => prevPage + 1);
     }
-  }, [inView, hasMore, loading]);
+  }, [inView, hasMore, loading, initialLoadComplete, page]);
 
   // Load more users when page changes (for infinite scroll)
   useEffect(() => {
@@ -90,6 +103,7 @@ const UserList: React.FC = () => {
             setUsers([]);
             setPage(1);
             setHasMore(true);
+            setInitialLoadComplete(false);
             isLoadingRef.current = false;
             setLoading(true);
 
@@ -97,6 +111,10 @@ const UserList: React.FC = () => {
               const response = await fetchUsers(1);
               setUsers(response.data);
               setHasMore(response.page < response.total_pages);
+              // Enable infinite scroll after retry
+              setTimeout(() => {
+                setInitialLoadComplete(true);
+              }, 1000);
             } catch (err) {
               console.error('Error retrying:', err);
               setError(
