@@ -1,30 +1,143 @@
-# Ombori Code Test
+# Ombori Fullstack Code Test - React Users Directory
 
-Hi there, we're really excited that you've made it this far in our interview process and look forward to getting to know you better.
+A responsive React application that displays users from the Reqres API with infinite scroll functionality and a custom loading screen.
 
-At Ombori, we strive to build fantastic apps using well structured and efficient code.
-The purpose of this task is to see how you solve problems and to make sure that you follow our linting rules as well as industry best practices.
+## ✅ Requirements Completed
 
-We've scaffolded a very basic project using create-react-app that will serve as your starting point for the task.
+- **✅ Custom Loading Component**: 3-second animated loading screen with pulse effect
+- **✅ User Data Fetching**: Fetches users from https://reqres.in/ API
+- **✅ Infinite Scroll**: Automatically loads more users as you scroll to the bottom
+- **✅ End of List Indicator**: Shows message when no more users are available
+- **✅ Responsive Design**: Optimized for desktop and mobile devices
+- **✅ Code Quality**: ESLint and Prettier configured for consistent formatting
 
-___
+## 🚀 Features
 
-What the test app should do:
+- **Custom Loading Screen**: Beautiful pulse animation with gradient background
+- **User Directory**: Clean, card-based layout displaying user avatars, names, and emails
+- **Infinite Scroll**: Seamless loading of additional users using Intersection Observer API
+- **Error Handling**: Graceful error handling with retry functionality
+- **TypeScript**: Full TypeScript support for better development experience
+- **Mobile-First Design**: Responsive layout that works great on all screen sizes
 
-* Display a custom loading component for 3 seconds
-* Fetch user data from https://reqres.in/
-* Display those users in a scrollable view that lazy loads more users when you've reached the bottom of the list, if there are no more users to load it should indicate that there are no more users.
-* Be responsive, look great and work well on different devices, especially various mobile screens
+## 🛠 Tech Stack
 
-We've prepared some screenshots in the design folder as well as a video of what the loading component should look like.
+- **React 18** with TypeScript
+- **Axios** for API calls
+- **react-intersection-observer** for infinite scroll detection
+- **CSS3** with modern features (Grid, Flexbox, Animations)
+- **ESLint & Prettier** for code quality
 
-___
+## 🏃‍♂️ Getting Started
 
-Those are the requirements. If you wish to show off more of your skillset, feel free to expand upon the app. We encourage you to solve the challenge using your favorite libraries and take the opportunity to present your toolbox, preferences and experience.
+### Prerequisites
 
-We only ask that you be able to motivate your choices.
+- Node.js (v14 or higher)
+- npm or yarn
 
-Before submitting your result please make sure that:
-* The code is formatted (including your favorite linter is a good idea); code that does not meet basic readability criteria will be rejected
-* The application resembles what is visible on screenshots in the design folder
-* The application meets criteria listed above in common desktop and mobile browsers
+### Installation
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Start the development server:
+   ```bash
+   npm start
+   ```
+
+3. Open [http://localhost:3000](http://localhost:3000) to view the application
+
+## 📜 Available Scripts
+
+- `npm start` - Runs the app in development mode
+- `npm run build` - Builds the app for production
+- `npm test` - Launches the test runner
+- `npm run lint` - Runs ESLint to check for code issues
+- `npm run lint:fix` - Automatically fixes ESLint issues
+- `npm run format` - Formats code with Prettier
+- `npm run format:check` - Checks if code is properly formatted
+
+## 📁 Project Structure
+
+```
+src/
+├── components/
+│   ├── LoadingScreen.tsx    # Custom loading component
+│   ├── LoadingScreen.css
+│   ├── UserCard.tsx         # Individual user card component
+│   ├── UserCard.css
+│   ├── UserList.tsx         # Main user list with infinite scroll
+│   └── UserList.css
+├── services/
+│   └── api.ts              # API service for fetching users
+├── App.tsx                 # Main application component
+├── App.css                 # Global styles
+└── index.tsx              # Application entry point
+```
+
+## 🔌 API Integration
+
+The application fetches user data from the [Reqres API](https://reqres.in/):
+- Endpoint: `https://reqres.in/api/users`
+- Supports pagination with `page` parameter
+- Returns user data including avatar, name, and email
+
+## 📱 Responsive Design
+
+The application is fully responsive and optimized for:
+- **Desktop**: Large screens with spacious card layouts
+- **Tablet**: Medium screens with adjusted spacing
+- **Mobile**: Small screens with compact, touch-friendly interfaces
+
+## 🌐 Browser Support
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+
+## 💡 Development Choices & Motivations
+
+### **TypeScript**
+- Provides type safety and better developer experience
+- Catches potential errors at compile time
+- Improves code maintainability and refactoring
+
+### **Axios**
+- Reliable HTTP client with excellent TypeScript support
+- Built-in request/response interceptors
+- Better error handling compared to fetch API
+
+### **react-intersection-observer**
+- Modern, performant way to detect when elements enter viewport
+- Better than scroll event listeners for performance
+- Built-in TypeScript support
+
+### **CSS Modules Approach**
+- Each component has its own CSS file for better organization
+- Avoids global CSS conflicts
+- Easier to maintain and debug styles
+
+### **Component Architecture**
+- Small, focused components with single responsibilities
+- Reusable UserCard component
+- Clear separation of concerns (API, UI, state management)
+
+### **Error Handling**
+- Comprehensive error handling for API failures
+- User-friendly error messages
+- Retry functionality for failed requests
+
+### **Performance Optimizations**
+- useCallback for preventing unnecessary re-renders
+- Intersection Observer for efficient scroll detection
+- Lazy loading to reduce initial bundle size
+
+## 🎨 Design Philosophy
+
+- **Mobile-First**: Designed for mobile devices first, then enhanced for larger screens
+- **Accessibility**: Semantic HTML and proper contrast ratios
+- **Performance**: Optimized animations and efficient rendering
+- **User Experience**: Smooth interactions and clear feedback
