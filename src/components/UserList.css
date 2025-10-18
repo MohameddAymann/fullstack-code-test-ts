@@ -108,6 +108,8 @@
 
 .intersection-observer {
   height: 1px;
+  background: transparent;
+  margin: 20px 0;
 }
 
 /* Mobile responsiveness */

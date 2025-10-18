@@ -14,8 +14,8 @@ const UserList: React.FC = () => {
   const isLoadingRef = useRef(false);
 
   const { ref, inView } = useInView({
-    threshold: 0.1,
-    rootMargin: '200px',
+    threshold: 0,
+    rootMargin: '50px', // Trigger when 50px away from the bottom
     skip: !initialLoadComplete, // Don't observe until initial load is complete
   });
 
@@ -37,7 +37,7 @@ const UserList: React.FC = () => {
         // Enable infinite scroll after initial load is complete
         setTimeout(() => {
           setInitialLoadComplete(true);
-        }, 1000); // 1 second delay to ensure smooth UX
+        }, 500); // 500ms delay to ensure smooth UX
       } catch (err) {
         console.error('Error loading initial users:', err);
         setError(err instanceof Error ? err.message : 'Failed to load users');
@@ -114,7 +114,7 @@ const UserList: React.FC = () => {
               // Enable infinite scroll after retry
               setTimeout(() => {
                 setInitialLoadComplete(true);
-              }, 1000);
+              }, 500);
             } catch (err) {
               console.error('Error retrying:', err);
               setError(
