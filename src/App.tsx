@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import LoadingScreen from './components/LoadingScreen';
 import UserList from './components/UserList';
+import ErrorBoundary from './components/ErrorBoundary';
 import './App.css';
 
 function App() {
@@ -12,11 +13,13 @@ function App() {
 
   return (
     <div className="App">
-      {isLoading ? (
-        <LoadingScreen onComplete={handleLoadingComplete} />
-      ) : (
-        <UserList />
-      )}
+      <ErrorBoundary>
+        {isLoading ? (
+          <LoadingScreen onComplete={handleLoadingComplete} />
+        ) : (
+          <UserList />
+        )}
+      </ErrorBoundary>
     </div>
   );
 }
