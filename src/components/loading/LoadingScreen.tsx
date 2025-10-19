@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { UI_CONFIG } from '../constants';
-import './LoadingScreen.css';
+import { UI_CONFIG } from '../../constants';
+import './styles/LoadingScreen.css';
 
 interface LoadingScreenProps {
   /** Callback function called when loading is complete */

@@ -1,5 +1,5 @@
 import React from 'react';
-import './ErrorState.css';
+import './styles/ErrorState.css';
 
 interface ErrorStateProps {
   /** Error message to display */

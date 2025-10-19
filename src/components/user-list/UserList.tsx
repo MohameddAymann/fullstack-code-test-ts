@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
-import { useUserList } from '../hooks/useUserList';
-import UserCard from './UserCard';
-import ErrorState from './ErrorState';
-import LoadingSkeleton from './LoadingSkeleton';
-import EndOfList from './EndOfList';
-import './UserList.css';
+import { useUserList } from '../../hooks/useUserList';
+import { UserCard } from './index';
+import { ErrorState } from '../error';
+import { LoadingSkeleton } from '../loading';
+import { EndOfList } from '../ui';
+import './styles/UserList.css';
 
 /**
  * UserList component that displays a list of users with infinite scroll

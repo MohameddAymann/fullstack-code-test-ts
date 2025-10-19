@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
-import { User } from '../services/api';
-import './UserCard.css';
+import { User } from '../../services/api';
+import './styles/UserCard.css';
 
 interface UserCardProps {
   /** User data to display */

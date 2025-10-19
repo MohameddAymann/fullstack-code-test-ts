@@ -1,5 +1,5 @@
 import React from 'react';
-import './LoadingSkeleton.css';
+import './styles/LoadingSkeleton.css';
 
 interface LoadingSkeletonProps {
   /** Number of skeleton items to display */

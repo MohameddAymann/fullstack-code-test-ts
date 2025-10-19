@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import LoadingScreen from './components/LoadingScreen';
-import UserList from './components/UserList';
-import ErrorBoundary from './components/ErrorBoundary';
+import { LoadingScreen, UserList, ErrorBoundary } from './components';
 import './App.css';
 
 function App() {
