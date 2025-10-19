@@ -134,8 +134,7 @@ const UserList: React.FC = () => {
   return (
     <div className="user-list-container">
       <div className="user-list-header">
-        <h1>Users Directory</h1>
-        <p>Scroll down to load more users</p>
+        <h1>Users</h1>
       </div>
 
       <div className="user-list">

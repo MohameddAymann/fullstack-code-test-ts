@@ -16,7 +16,6 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
         <h3 className="user-name">
           {user.first_name} {user.last_name}
         </h3>
-        <p className="user-email">{user.email}</p>
       </div>
     </div>
   );
