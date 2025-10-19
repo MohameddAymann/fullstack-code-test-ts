@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { User, fetchUsers } from '../services/api';
+import { UI_CONFIG, ERROR_MESSAGES } from '../constants';
 import UserCard from './UserCard';
 import './UserList.css';
 
@@ -14,41 +15,40 @@ const UserList: React.FC = () => {
   const isLoadingRef = useRef(false);
 
   const { ref, inView } = useInView({
-    threshold: 0,
-    rootMargin: '50px', // Trigger when 50px away from the bottom
+    threshold: UI_CONFIG.INTERSECTION_OBSERVER_THRESHOLD,
+    rootMargin: UI_CONFIG.INTERSECTION_OBSERVER_ROOT_MARGIN,
     skip: !initialLoadComplete, // Don't observe until initial load is complete
   });
 
   // Load initial users on component mount
+  const loadInitialUsers = useCallback(async () => {
+    if (isLoadingRef.current) return;
+
+    isLoadingRef.current = true;
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetchUsers(1);
+      setUsers(response.data);
+      setHasMore(response.page < response.total_pages);
+      // Enable infinite scroll after initial load is complete
+      setTimeout(() => {
+        setInitialLoadComplete(true);
+      }, UI_CONFIG.INFINITE_SCROLL_DELAY);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : ERROR_MESSAGES.GENERIC_ERROR
+      );
+    } finally {
+      setLoading(false);
+      isLoadingRef.current = false;
+    }
+  }, []);
+
   useEffect(() => {
-    const loadInitialUsers = async () => {
-      if (isLoadingRef.current) return;
-
-      console.log('Loading initial users...');
-      isLoadingRef.current = true;
-      setLoading(true);
-      setError(null);
-
-      try {
-        const response = await fetchUsers(1);
-        console.log('Initial users loaded:', response);
-        setUsers(response.data);
-        setHasMore(response.page < response.total_pages);
-        // Enable infinite scroll after initial load is complete
-        setTimeout(() => {
-          setInitialLoadComplete(true);
-        }, 500); // 500ms delay to ensure smooth UX
-      } catch (err) {
-        console.error('Error loading initial users:', err);
-        setError(err instanceof Error ? err.message : 'Failed to load users');
-      } finally {
-        setLoading(false);
-        isLoadingRef.current = false;
-      }
-    };
-
     loadInitialUsers();
-  }, []); // Only run once on mount
+  }, [loadInitialUsers]); // Only run once on mount
 
   // Handle infinite scroll
   useEffect(() => {
@@ -59,37 +59,37 @@ const UserList: React.FC = () => {
       !isLoadingRef.current &&
       initialLoadComplete
     ) {
-      console.log('Triggering infinite scroll - loading page:', page + 1);
       setPage(prevPage => prevPage + 1);
     }
   }, [inView, hasMore, loading, initialLoadComplete, page]);
 
   // Load more users when page changes (for infinite scroll)
-  useEffect(() => {
-    if (page > 1) {
-      const loadMoreUsers = async () => {
-        if (isLoadingRef.current) return;
+  const loadMoreUsers = useCallback(async () => {
+    if (page === 1 || isLoadingRef.current) return;
 
-        isLoadingRef.current = true;
-        setLoading(true);
-        setError(null);
+    isLoadingRef.current = true;
+    setLoading(true);
+    setError(null);
 
-        try {
-          const response = await fetchUsers(page);
-          setUsers(prevUsers => [...prevUsers, ...response.data]);
-          setHasMore(response.page < response.total_pages);
-        } catch (err) {
-          console.error('Error loading more users:', err);
-          setError(err instanceof Error ? err.message : 'Failed to load users');
-        } finally {
-          setLoading(false);
-          isLoadingRef.current = false;
-        }
-      };
-
-      loadMoreUsers();
+    try {
+      const response = await fetchUsers(page);
+      setUsers(prevUsers => [...prevUsers, ...response.data]);
+      setHasMore(response.page < response.total_pages);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : ERROR_MESSAGES.GENERIC_ERROR
+      );
+    } finally {
+      setLoading(false);
+      isLoadingRef.current = false;
     }
   }, [page]);
+
+  useEffect(() => {
+    if (page > 1) {
+      loadMoreUsers();
+    }
+  }, [page, loadMoreUsers]);
 
   if (error) {
     return (
@@ -114,11 +114,12 @@ const UserList: React.FC = () => {
               // Enable infinite scroll after retry
               setTimeout(() => {
                 setInitialLoadComplete(true);
-              }, 500);
+              }, UI_CONFIG.INFINITE_SCROLL_DELAY);
             } catch (err) {
-              console.error('Error retrying:', err);
               setError(
-                err instanceof Error ? err.message : 'Failed to load users'
+                err instanceof Error
+                  ? err.message
+                  : ERROR_MESSAGES.GENERIC_ERROR
               );
             } finally {
               setLoading(false);
@@ -133,30 +134,40 @@ const UserList: React.FC = () => {
 
   return (
     <div className="user-list-container">
-      <div className="user-list-header">
+      <header className="user-list-header">
         <h1>Users</h1>
-      </div>
+      </header>
 
-      <div className="user-list">
-        {users.map(user => (
-          <UserCard key={user.id} user={user} />
-        ))}
-      </div>
+      <main>
+        <section
+          className="user-list"
+          role="list"
+          aria-label="List of users"
+          aria-live="polite"
+        >
+          {users.map(user => (
+            <UserCard key={user.id} user={user} />
+          ))}
+        </section>
 
-      {loading && (
-        <div className="loading-more">
-          <div className="loading-spinner"></div>
-          <p>Loading more users...</p>
-        </div>
-      )}
+        {loading && (
+          <div className="loading-more" role="status" aria-live="polite">
+            <div className="loading-spinner" aria-hidden="true"></div>
+            <p>Loading more users...</p>
+            <span className="sr-only">
+              Please wait while we load more users
+            </span>
+          </div>
+        )}
 
-      {!hasMore && users.length > 0 && (
-        <div className="no-more-users">
-          <p>🎉 You've reached the end! No more users to load.</p>
-        </div>
-      )}
+        {!hasMore && users.length > 0 && (
+          <div className="no-more-users" role="status">
+            <p>🎉 You've reached the end! No more users to load.</p>
+          </div>
+        )}
 
-      <div ref={ref} className="intersection-observer" />
+        <div ref={ref} className="intersection-observer" aria-hidden="true" />
+      </main>
     </div>
   );
 };
