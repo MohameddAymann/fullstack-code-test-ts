@@ -1,32 +1,41 @@
-# Ombori Fullstack Code Test - React Users Directory
+# 🚀 Fullstack Code Test - TypeScript
 
-A responsive React application that displays users from the Reqres API with infinite scroll functionality and a custom loading screen.
+A modern React application built with TypeScript that demonstrates best practices for user management with infinite scroll functionality.
 
-## ✅ Requirements Completed
+## ✨ Features
 
-- **✅ Custom Loading Component**: 3-second animated loading screen with pulse effect
-- **✅ User Data Fetching**: Fetches users from https://reqres.in/ API
-- **✅ Infinite Scroll**: Automatically loads more users as you scroll to the bottom
-- **✅ End of List Indicator**: Shows message when no more users are available
-- **✅ Responsive Design**: Optimized for desktop and mobile devices
-- **✅ Code Quality**: ESLint and Prettier configured for consistent formatting
+- **🎨 Modern UI/UX**: Clean, responsive design with smooth animations
+- **♾️ Infinite Scroll**: Efficiently loads users as you scroll
+- **⚡ Performance Optimized**: React.memo, useCallback, and lazy loading
+- **♿ Accessible**: ARIA labels, semantic HTML, and screen reader support
+- **🛡️ Error Handling**: Comprehensive error boundaries and user feedback
+- **📱 Mobile-First**: Responsive design that works on all devices
+- **🎯 TypeScript**: Full type safety throughout the application
 
-## 🚀 Features
+## 🏗️ Architecture
 
-- **Custom Loading Screen**: Beautiful pulse animation with gradient background
-- **User Directory**: Clean, card-based layout displaying user avatars, names, and emails
-- **Infinite Scroll**: Seamless loading of additional users using Intersection Observer API
-- **Error Handling**: Graceful error handling with retry functionality
-- **TypeScript**: Full TypeScript support for better development experience
-- **Mobile-First Design**: Responsive layout that works great on all screen sizes
+### **Project Structure**
+```
+src/
+├── components/          # Reusable UI components
+│   ├── ErrorBoundary.tsx    # Error boundary for graceful error handling
+│   ├── LoadingScreen.tsx    # Initial loading screen with pulse animation
+│   ├── UserCard.tsx         # Individual user card component
+│   └── UserList.tsx         # Main user list with infinite scroll
+├── constants/           # Application constants and configuration
+│   └── index.ts             # Centralized constants
+├── services/            # API and external service integrations
+│   └── api.ts              # User API service with error handling
+└── App.tsx              # Main application component
+```
 
-## 🛠 Tech Stack
-
+### **Key Technologies**
 - **React 18** with TypeScript
-- **Axios** for API calls
-- **react-intersection-observer** for infinite scroll detection
-- **CSS3** with modern features (Grid, Flexbox, Animations)
-- **ESLint & Prettier** for code quality
+- **React Hooks** (useState, useEffect, useCallback, useRef)
+- **React Intersection Observer** for infinite scroll
+- **Axios** for HTTP requests
+- **CSS3** with modern animations
+- **ESLint + Prettier** for code quality
 
 ## 🏃‍♂️ Getting Started
 
